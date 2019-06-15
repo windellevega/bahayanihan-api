@@ -17,7 +17,9 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'firstname', 'middlename', 'lastname', 'email_address', 
+        'username', 'password', 'address_long', 'address_lat', 
+        'is_worker', 'profile_picture_url', 'mobile_number',
     ];
 
     /**
@@ -34,7 +36,10 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+
+    public function findForPassport($username)
+    {
+        return $this->where('username', $username)
+                ->orWhere('email_address', $username)->first();
+    }
 }
