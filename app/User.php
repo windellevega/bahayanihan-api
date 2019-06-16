@@ -31,15 +31,24 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-
     public function findForPassport($username)
     {
         return $this->where('username', $username)
                 ->orWhere('email_address', $username)->first();
+    }
+
+    public function UserSkills()
+    {
+        return $this->hasMany('App\UserSkill');
+    }
+
+    public function Transactions()
+    {
+        return $this->hasMany('App\Transaction');
+    }
+
+    public function WorkerApplications()
+    {
+        return $this->hasMany('App\WorkerApplication');
     }
 }
