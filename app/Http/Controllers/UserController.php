@@ -6,6 +6,11 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
+//Worker type constants
+define('ALL_TYPES', -1);
+define('NON_WORKERS', 0);
+define('WORKERS', 1);
+
 class UserController extends Controller
 {
     /**
@@ -13,11 +18,32 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($type = ALL_TYPES)
     {
-        return response()->json([
-            'message' => 'test'
-        ]);
+        if($type == ALL_TYPES) {
+            $users = User::all();
+        }
+        else if($type == NON_WORKERS) {
+            $users = User::where('is_worker', 0)
+                        ->first();
+        }
+        else if($type == WORKERS) {
+            $users = User::where('is_worker', 1)
+                        ->first();
+        }
+        else {
+            return response()->json([
+                'error' => 'Invalid user type.'
+            ]);
+        }
+
+        if(!$users) {
+            return response()->json([
+                'error' => 'No users found.'
+            ]);
+        }
+
+        return response()->json($users);
     }
 
     /**
@@ -33,8 +59,9 @@ class UserController extends Controller
             'password' => 'required',
             'firstname' => 'required',
             'lastname' => 'required',
-            'address_lat' => 'numeric|nullable',
-            'address_long' => 'numeric|nullable',
+            'address' => 'required',
+            'current_lat' => 'numeric|required',
+            'current_long' => 'numeric|required',
             'is_worker' => 'required|boolean',
             'mobile_number' => 'numeric|regex:/(09)[0-9]{9}/',
             'email_address' => 'email|unique:users,email_address',
@@ -45,17 +72,18 @@ class UserController extends Controller
         }
 
         $user = User::create([
-            'firstname' => $request['firstname'],
-            'middlename' => $request['middlename'],
-            'lastname' => $request['lastname'],
-            'email_address' => $request['email_address'],
-            'username' => $request['username'],
-            'password' => Hash::make($request['password']),
-            'address_long' => $request['address_long'],
-            'address_lat' => $request['address_lat'],
-            'is_worker' => $request['is_worker'],
+            'firstname' => $request->firstname,
+            'middlename' => $request->middlename,
+            'lastname' => $request->lastname,
+            'email_address' => $request->email_address,
+            'username' => $request->username,
+            'password' => Hash::make($request->password),
+            'address' => $request->address,
+            'current_long' => $request->current_long,
+            'current_lat' => $request->current_lat,
+            'is_worker' => $request->is_worker,
             'profile_picture_url' => isset($request->profile_picture_url) ? $request->profile_picture_url : 'public/photos/profile/default.jpg',
-            'mobile_number' => $request['mobile_number'],
+            'mobile_number' => $request->mobile_number,
         ]);
 
         $success['token'] = $user->createToken('BahayanihanAPI')->accessToken;
@@ -71,7 +99,15 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        
+        $user = User::find($id);
+
+        if(!$user) {
+            return response()->json([
+                'error' => 'User not found.'
+            ]);
+        }
+
+        return response()->json($user);
     }
 
     /**
@@ -81,9 +117,51 @@ class UserController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, $id)
     {
-        //
+        $validator = \Validator::make($request->all(), [
+            'password' => 'required',
+            'firstname' => 'required',
+            'lastname' => 'required',
+            'address' => 'required',
+            'current_lat' => 'numeric|required',
+            'current_long' => 'numeric|required',
+            'is_worker' => 'required|boolean',
+            'mobile_number' => 'numeric|regex:/(09)[0-9]{9}/',
+        ]);
+
+        if($validator->fails()) {
+            return response()->json($validator->errors()->all());
+        }
+
+        $user = User::find($id); //replace with Auth::id();
+
+        if(!$user) {
+            return response()->json([
+                'error' => 'User not found.'
+            ]);
+        }
+
+        $user->firstname = $request->firstname;
+        $user->middlename = $request->middlename;
+        $user->lastname = $request->lastname;
+        $user->address = $request->address;
+
+        if(!Hash::check($request->password, $user->password)) {
+            $user->password = Hash::make($request->password);
+        }
+
+        $user->current_long = $request->current_long;
+        $user->current_lat = $request->current_lat;
+        $user->is_worker = $request->is_worker;
+        $user->profile_picture_url = isset($request->profile_picture_url) ? $request->profile_picture_url : 'public/photos/profile/default.jpg';
+        $user->mobile_number = $request->mobile_number;
+
+        $user->save();
+
+        return response()->json([
+            'message' => 'User information updated successfully.'
+        ]);
     }
 
     /**
