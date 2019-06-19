@@ -6,7 +6,7 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
-//Worker type constants
+//Worker Type constants
 define('ALL_TYPES', -1);
 define('NON_WORKERS', 0);
 define('WORKERS', 1);
