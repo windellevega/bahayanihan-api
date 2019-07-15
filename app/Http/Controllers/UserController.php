@@ -102,6 +102,12 @@ class UserController extends Controller
         return response()->json($user);
     }
 
+    public function loggedInUserInfo()
+    {
+        $user = User::find(\Auth::id());
+        return response()->json($user);
+    }
+
     /**
      * Update the specified resource in storage.
      *
