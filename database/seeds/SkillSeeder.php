@@ -25,12 +25,12 @@ class SkillSeeder extends Seeder
             ['skill_name' => 'Housekeeping', 'skill_rate' => 150.00],
         ];
 
-        DB::statement('SET FOREIGN_KEY_CHECKS=0');
+        //DB::statement('SET FOREIGN_KEY_CHECKS=0');
 
-        DB::table('skills')->truncate();
+        //DB::table('skills')->truncate();
 
         Skill::insert($skills);
 
-        DB::statement('SET FOREIGN_KEY_CHECKS=1');
+        //DB::statement('SET FOREIGN_KEY_CHECKS=1');
     }
 }
