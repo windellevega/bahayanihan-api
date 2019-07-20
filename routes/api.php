@@ -24,6 +24,7 @@ Route::post('/user/register', 'UserController@store');
 Route::middleware('auth:api')->get('/user/{user}', 'UserController@show');
 Route::middleware('auth:api')->put('/user/{id}', 'UserController@update');
 Route::middleware('auth:api')->get('/profile', 'UserController@loggedInUserInfo');
+Route::middleware('auth:api')->put('/user-location', 'UserController@updateLocation');
 
 
 

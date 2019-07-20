@@ -62,7 +62,6 @@ class UserController extends Controller
             'address' => 'required',
             'current_lat' => 'numeric|required',
             'current_long' => 'numeric|required',
-            'is_worker' => 'required|boolean',
             'mobile_number' => 'numeric|regex:/(09)[0-9]{9}/',
             'email_address' => 'email|unique:users,email_address',
         ]);
@@ -81,14 +80,14 @@ class UserController extends Controller
             'address' => $request->address,
             'current_long' => $request->current_long,
             'current_lat' => $request->current_lat,
-            'is_worker' => $request->is_worker,
-            'profile_picture_url' => isset($request->profile_picture_url) ? $request->profile_picture_url : 'public/photos/profile/default.jpg',
+            'is_worker' => false,
+            'profile_picture_url' => './assets/profile_pictures/default.jpg',
             'mobile_number' => $request->mobile_number,
         ]);
 
-        $success['token'] = $user->createToken('BahayanihanAPI')->accessToken;
+        $access_token = $user->createToken('BahayanihanAPI')->accessToken;
 
-        return response()->json(['success' => $success]);
+        return response()->json(['access_token' => $access_token]);
     }
 
     /**
@@ -159,6 +158,35 @@ class UserController extends Controller
 
         return response()->json([
             'message' => 'User information updated successfully.'
+        ]);
+    }
+
+    public function updateLocation(Request $request)
+    {
+        $validator = \Validator::make($request->all(), [
+            'current_lat' => 'numeric|required',
+            'current_long' => 'numeric|required',
+        ]);
+
+        if($validator->fails()) {
+            return response()->json($validator->errors()->all());
+        }
+
+        $user = User::find(\Auth::id()); //replace with Auth::id();
+
+        if(!$user) {
+            return response()->json([
+                'error' => 'User not found.'
+            ]);
+        }
+
+        $user->current_long = $request->current_long;
+        $user->current_lat = $request->current_lat;
+
+        $user->save();
+
+        return response()->json([
+            'message' => 'User location updated successfully.'
         ]);
     }
 
