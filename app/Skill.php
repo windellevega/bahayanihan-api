@@ -10,8 +10,8 @@ class Skill extends Model
         'skill_name', 'skill_rate',
     ];
 
-    public function UserSkill()
+    public function UserSkills()
     {
-        return $this->belongsTo('App\UserSkill');
+        return $this->hasMany('App\UserSkill');
     }
 }

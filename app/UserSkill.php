@@ -17,7 +17,7 @@ class UserSkill extends Model
 
     public function Skills()
     {
-        return $this->hasMany('App\Skill');
+        return $this->belongsTo('App\Skill', 'skill_id');
     }
 
     public function Credentials()

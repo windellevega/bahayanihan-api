@@ -25,11 +25,12 @@ class UserController extends Controller
         }
         else if($type == NON_WORKERS) {
             $users = User::where('is_worker', 0)
-                        ->first();
+                        ->get();
         }
         else if($type == WORKERS) {
             $users = User::where('is_worker', 1)
-                        ->first();
+                        ->get();
+            $users->load('UserSkills.Skills');
         }
         else {
             return response()->json([
