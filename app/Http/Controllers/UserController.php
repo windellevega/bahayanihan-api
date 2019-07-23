@@ -99,7 +99,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return response()->json($user);
+        return response()->json($user->load('UserSkills.Skills'));
     }
 
     public function loggedInUserInfo()
