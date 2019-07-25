@@ -15,8 +15,9 @@ class WorkerApplication extends Model
         return $this->belongsTo('App\User');
     }
 
-    public function WokerApplicationStatusDetails()
+    public function WokerApplicationStatusHistory()
     {
-        return $this->hasMany('App\WorkerApplicationStatusDetail');
+        return $this->belongsToMany('App\ApplicationStatus', 'worker_application_status_details', 'worker_application_id', 'application_status_id')
+                ->withTimestamps();
     }
 }

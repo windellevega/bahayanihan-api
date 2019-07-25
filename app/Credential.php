@@ -12,6 +12,6 @@ class Credential extends Model
 
     public function UserSkill()
     {
-        return $this->belongsTo('App\UserSkill');
+        return $this->belongsTo('App\User');
     }
 }

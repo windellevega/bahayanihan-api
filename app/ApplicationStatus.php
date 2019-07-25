@@ -10,8 +10,8 @@ class ApplicationStatus extends Model
         'status',
     ];
 
-    public function WorkerApplicationStatusDetail()
+    public function WorkerApplications()
     {
-        return $this->belongsTo('App\WorkerApplicationStatusDetail');
+        return $this->belongsToMany('App\WorkerApplication');
     }
 }

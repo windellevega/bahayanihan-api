@@ -11,6 +11,9 @@ define('ALL_TYPES', -1);
 define('NON_WORKERS', 0);
 define('WORKERS', 1);
 
+//Skill constant
+define('ALL_SKILLS', 0);
+
 class UserController extends Controller
 {
     /**
@@ -18,7 +21,7 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($type = ALL_TYPES)
+    public function index($type = ALL_TYPES, $skill = ALL_SKILLS)
     {
         if($type == ALL_TYPES) {
             $users = User::all();
@@ -28,9 +31,19 @@ class UserController extends Controller
                         ->get();
         }
         else if($type == WORKERS) {
-            $users = User::where('is_worker', 1)
-                        ->get();
-            $users->load('UserSkills.Skills');
+            if($skill == ALL_SKILLS) {
+                $users = User::where('is_worker', 1)
+                            ->get();
+                $users->load('Skills');
+            }
+            else {
+                $users = User::where('is_worker', 1)
+                            ->whereHas('Skills', function($q) use ($skill) {
+                                $q->where('skill_id', $skill);
+                            })
+                            ->get();
+                $users->load('Skills');
+            }
         }
         else {
             return response()->json([

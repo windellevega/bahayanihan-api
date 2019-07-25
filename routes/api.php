@@ -19,7 +19,7 @@ use Illuminate\Http\Request;
  * -------------------------------------------------------------------------
  */
 //Route::middleware('auth:api')->get('/users', 'UserController@index');
-Route::middleware('auth:api')->get('/users/{type?}', 'UserController@index');
+Route::middleware('auth:api')->get('/users/{type?}/{skill?}', 'UserController@index');
 Route::post('/user/register', 'UserController@store');
 Route::middleware('auth:api')->get('/user/{user}', 'UserController@show');
 Route::middleware('auth:api')->put('/user/{id}', 'UserController@update');

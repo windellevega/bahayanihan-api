@@ -21,8 +21,10 @@ class Transaction extends Model
         return $this->belongsTo('App\User', 'worker_id');
     }
 
-    public function TransactionStatusDetails()
+    public function TransactionStatusHistory()
     {
-        return $this->hasMany('App\TransactionStatusDetail');
+        return $this->belongsToMany('App\TransactionStatus', 'transaction_status_details', 'transaction_id', 'transaction_status_id')
+                ->withPivot('remarks')
+                ->withTimestamps();
     }
 }

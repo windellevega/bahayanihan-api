@@ -10,8 +10,8 @@ class TransactionStatus extends Model
         'status',
     ];
 
-    public function TransactionStatusDetail()
+    public function Transactions()
     {
-        return $this->belongsTo('App\TransactionStatusDetail');
+        return $this->belongsToMany('App\Transaction');
     }
 }
