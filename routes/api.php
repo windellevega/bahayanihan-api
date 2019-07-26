@@ -26,5 +26,7 @@ Route::middleware('auth:api')->put('/user/{id}', 'UserController@update');
 Route::middleware('auth:api')->get('/profile', 'UserController@loggedInUserInfo');
 Route::middleware('auth:api')->put('/user-location', 'UserController@updateLocation');
 
+Route::middleware('auth:api')->get('/skills', 'SkillController@index');
+
 
 

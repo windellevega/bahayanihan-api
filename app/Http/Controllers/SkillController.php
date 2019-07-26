@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Skill;
+
 use Illuminate\Http\Request;
 
 class SkillController extends Controller
@@ -13,7 +15,9 @@ class SkillController extends Controller
      */
     public function index()
     {
-        //
+        $skills = Skill::orderBy('skill_name')
+                    ->get();
+        return response()->json($skills);
     }
 
     /**
