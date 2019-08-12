@@ -19,14 +19,25 @@ use Illuminate\Http\Request;
  * -------------------------------------------------------------------------
  */
 //Route::middleware('auth:api')->get('/users', 'UserController@index');
-Route::middleware('auth:api')->get('/users/{type?}/{skill?}', 'UserController@index');
-Route::post('/user/register', 'UserController@store');
-Route::middleware('auth:api')->get('/user/{user}', 'UserController@show');
-Route::middleware('auth:api')->put('/user/{id}', 'UserController@update');
-Route::middleware('auth:api')->get('/profile', 'UserController@loggedInUserInfo');
-Route::middleware('auth:api')->put('/user-location', 'UserController@updateLocation');
 
-Route::middleware('auth:api')->get('/skills', 'SkillController@index');
+Route::group([
+	'middleware' => 'auth:api'
+], function() {
+    Route::get('/users/{type?}/{skill?}', 'UserController@index');
+    
+    Route::get('/user/{user}', 'UserController@show');
+    Route::put('/user/{id}', 'UserController@update');
+    Route::get('/profile', 'UserController@loggedInUserInfo');
+    Route::put('/user-location', 'UserController@updateLocation');
+
+    Route::middleware('auth:api')->get('/skills', 'SkillController@index');
+});
+
+Route::post('/user/register', 'UserController@store');
+
+Route::get('/conversations', 'ConversationController@index');
+Route::get('/conversation/{id}', 'ConversationController@show');
+Route::post('/message', 'ConversationController@store');
 
 
 

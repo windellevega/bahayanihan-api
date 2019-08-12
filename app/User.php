@@ -58,4 +58,8 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\WorkerApplication');
     }
+
+    public function Conversations() {
+        return $this->belongsToMany('App\Conversation', 'user_conversations', 'user_id', 'conversation_id');
+    }
 }
