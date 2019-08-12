@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Conversation;
 use App\Message;
+use App\Events\NewMessage;
 
 class ConversationController extends Controller
 {
@@ -55,9 +56,13 @@ class ConversationController extends Controller
             ]);
         }
 
-        return response()->json([
-            'message' => 'Message sent.'
-        ]); 
+        $message = Message::where('id', $message->id)
+                    ->with('User')
+                    ->first();
+
+        broadcast(new NewMessage($message))->toOthers();
+        
+        return response()->json($message);
     }
 
     /**
