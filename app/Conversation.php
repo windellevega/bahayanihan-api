@@ -15,4 +15,9 @@ class Conversation extends Model
     {
         return $this->belongsToMany('App\User', 'user_conversations', 'conversation_id', 'user_id');
     }
+
+    public function latestMessage()
+    {
+        return $this->hasOne('App\Message')->latest();
+    }
 }

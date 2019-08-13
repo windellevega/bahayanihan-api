@@ -14,3 +14,12 @@
 Broadcast::channel('App.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
+
+Broadcast::channel('conversation.{id}', function ($user, $id) {
+    return $user->id ==  \App\User::where('id', 1)
+                            ->whereHas('Conversations', function($q) {
+                                $q->where('user_id', 1);
+                            })
+                            ->first()
+                            ->id;
+});

@@ -19,7 +19,10 @@ class ConversationController extends Controller
     public function index()
     {
         $user = User::find(1);
-        $user->load('Conversations.Users');
+        $user->load(['Conversations.latestMessage', 'Conversations.Users' => function($query) {
+                    $query->where('user_id', '!=', 1);
+        }]);
+        //$user->load('Conversations.Users');
 
         return response()->json($user);
     }
@@ -49,7 +52,7 @@ class ConversationController extends Controller
             'message' => $request->message,
             'is_read' => false
         ]);
-        
+
         if(!isset($message->id)) {
             return response()->json([
                 'message' => 'Message sending failed.'
@@ -57,11 +60,13 @@ class ConversationController extends Controller
         }
 
         $message = Message::where('id', $message->id)
-                    ->with('User')
+                    ->with(['User'=> function($query) {
+                        $query->select('id', 'firstname', 'lastname', 'profile_picture_url');
+                    }])
                     ->first();
 
         broadcast(new NewMessage($message))->toOthers();
-        
+
         return response()->json($message);
     }
 
@@ -77,8 +82,10 @@ class ConversationController extends Controller
                         ->whereHas('Users', function($q){
                             $q->where('user_id', 1);
                         })
-                        ->get();
-        $messages->load('Messages');
+                        ->first();
+        $messages->load(['Messages.User' => function($query) {
+            $query->select('id', 'firstname', 'lastname', 'profile_picture_url');
+        }]);
 
         return response()->json($messages);
     }

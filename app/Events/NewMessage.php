@@ -12,6 +12,7 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
+use Carbon\Carbon;
 
 class NewMessage implements ShouldBroadcastNow
 {
@@ -35,20 +36,11 @@ class NewMessage implements ShouldBroadcastNow
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('conversation.' . $this->message->Conversation->id);
+        return new PrivateChannel('conversation.' . $this->message->conversation_id);
     }
 
     public function broadcastWith()
     {
-        return [
-            'message' => $this->message->message,
-            'from_user_id' => $this->message->from_user_id,
-            'is_read' => $this->message->is_read,
-            'user' => [
-                'firstname' => $this->message->User->firstname,
-                'lastname' => $this->message->User->lastname,
-                'profile_picture_url' => $this->message->User->profile_picture_url
-            ]
-        ];
+        return $this->message->toArray();
     }
 }
