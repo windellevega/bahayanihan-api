@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Auth;
 
 //Worker Type constants
 define('ALL_TYPES', -1);
@@ -117,7 +118,7 @@ class UserController extends Controller
 
     public function loggedInUserInfo()
     {
-        $user = User::find(\Auth::id());
+        $user = User::find(Auth::id());
         return response()->json($user);
     }
 
@@ -186,7 +187,7 @@ class UserController extends Controller
             return response()->json($validator->errors()->all());
         }
 
-        $user = User::find(\Auth::id()); //replace with Auth::id();
+        $user = User::find(Auth::id()); //replace with Auth::id();
 
         if(!$user) {
             return response()->json([

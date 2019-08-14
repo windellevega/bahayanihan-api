@@ -16,9 +16,9 @@ Broadcast::channel('App.User.{id}', function ($user, $id) {
 });
 
 Broadcast::channel('conversation.{id}', function ($user, $id) {
-    return $user->id ==  \App\User::where('id', 1)
-                            ->whereHas('Conversations', function($q) {
-                                $q->where('user_id', 1);
+    return $id == \App\Conversation::where('id', $id)
+                            ->whereHas('Users', function($q) use ($user) {
+                                $q->where('user_id', $user->id);
                             })
                             ->first()
                             ->id;

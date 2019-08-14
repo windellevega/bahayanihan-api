@@ -8,7 +8,8 @@ class Conversation extends Model
 {
     public function Messages()
     {
-        return $this->hasMany('App\Message');
+        return $this->hasMany('App\Message')
+                ->orderBy('created_at');
     }
 
     public function Users()
@@ -18,6 +19,7 @@ class Conversation extends Model
 
     public function latestMessage()
     {
-        return $this->hasOne('App\Message')->latest();
+        return $this->hasOne('App\Message')
+                ->latest();
     }
 }

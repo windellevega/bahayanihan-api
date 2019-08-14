@@ -8,6 +8,7 @@ use App\User;
 use App\Conversation;
 use App\Message;
 use App\Events\NewMessage;
+use Auth;
 
 class ConversationController extends Controller
 {
@@ -18,13 +19,24 @@ class ConversationController extends Controller
      */
     public function index()
     {
-        $user = User::find(1);
+        $user = User::find(Auth::id());
         $user->load(['Conversations.latestMessage', 'Conversations.Users' => function($query) {
-                    $query->where('user_id', '!=', 1);
+                    $query->where('user_id', '!=', Auth::id());
         }]);
         //$user->load('Conversations.Users');
 
         return response()->json($user);
+    }
+
+    public function try()
+    {
+        $conv = Conversation::where('id',5)
+                    ->whereHas('Users', function($q) {
+                        $q->where('user_id', 2);
+                    })
+                    ->first()
+                    ->id;
+        return response()->json($conv);
     }
 
     /**
@@ -35,10 +47,10 @@ class ConversationController extends Controller
      */
     public function store(Request $request)
     {
-        if(isset($request->conversation_id) == null) {
+        if(!isset($request->conversation_id)) {
             $conversation = Conversation::create();
 
-            $conversation->Users()->sync([$request->from_user_id, $request->to_user_id]);
+            $conversation->Users()->sync([Auth::id(), $request->to_user_id]);
 
             $conversation->id = $conversation->id;
         }
@@ -48,7 +60,7 @@ class ConversationController extends Controller
 
         $message = Message::create([
             'conversation_id' => $conversation_id,
-            'from_user_id' => $request->from_user_id,
+            'from_user_id' => Auth::id(),
             'message' => $request->message,
             'is_read' => false
         ]);
@@ -80,7 +92,7 @@ class ConversationController extends Controller
     {
         $messages = Conversation::where('id', $id)
                         ->whereHas('Users', function($q){
-                            $q->where('user_id', 1);
+                            $q->where('user_id', Auth::id());
                         })
                         ->first();
         $messages->load(['Messages.User' => function($query) {

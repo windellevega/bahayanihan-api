@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Message extends Model
 {
     protected $fillable = [
-        'conversation_id', 'from_user_id', 
+        'conversation_id', 'from_user_id',
         'message', 'is_read'
     ];
 

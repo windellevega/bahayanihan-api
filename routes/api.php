@@ -31,13 +31,16 @@ Route::group([
     Route::put('/user-location', 'UserController@updateLocation');
 
     Route::middleware('auth:api')->get('/skills', 'SkillController@index');
+
+    Route::get('/conversations', 'ConversationController@index');
+    Route::get('/conversation/{id}', 'ConversationController@show');
+    Route::post('/message', 'ConversationController@store');
+    Route::get('/try', 'ConversationController@try');
 });
 
 Route::post('/user/register', 'UserController@store');
 
-Route::get('/conversations', 'ConversationController@index');
-Route::get('/conversation/{id}', 'ConversationController@show');
-Route::post('/message', 'ConversationController@store');
+
 
 
 
