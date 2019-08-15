@@ -9,6 +9,7 @@ use App\Conversation;
 use App\Message;
 use App\Events\NewMessage;
 use Auth;
+use Carbon\Carbon;
 
 class ConversationController extends Controller
 {
@@ -20,10 +21,14 @@ class ConversationController extends Controller
     public function index()
     {
         $user = User::find(Auth::id());
-        $user->load(['Conversations.latestMessage', 'Conversations.Users' => function($query) {
+        //$user->withCount('Conversations.unreadMessages');
+        $user->load(['Conversations' => function($query) {
+            $query->withCount('unreadMessages');
+        }, 
+        'Conversations.latestMessage',
+        'Conversations.Users' => function($query) {
                     $query->where('user_id', '!=', Auth::id());
         }]);
-        //$user->load('Conversations.Users');
 
         return response()->json($user);
     }
@@ -64,6 +69,10 @@ class ConversationController extends Controller
             'message' => $request->message,
             'is_read' => false
         ]);
+
+        $conversation = Conversation::find($conversation_id);
+        $conversation->updated_at = Carbon::now();
+        $conversation->save();
 
         if(!isset($message->id)) {
             return response()->json([

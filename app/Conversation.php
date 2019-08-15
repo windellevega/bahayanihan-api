@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Auth;
 
 class Conversation extends Model
 {
@@ -21,5 +22,12 @@ class Conversation extends Model
     {
         return $this->hasOne('App\Message')
                 ->latest();
+    }
+
+    public function unreadMessages()
+    {
+        return $this->hasMany('App\Message')
+                ->where('from_user_id', '<>', Auth::id())
+                ->where('is_read', false);
     }
 }
