@@ -8,7 +8,7 @@ use App\User;
 use App\Conversation;
 use App\Message;
 use App\Events\NewMessage;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
 class ConversationController extends Controller
@@ -64,10 +64,10 @@ class ConversationController extends Controller
         }
 
         $message = Message::create([
-            'conversation_id' => $conversation_id,
-            'from_user_id' => Auth::id(),
-            'message' => $request->message,
-            'is_read' => false
+            'conversation_id'   => $conversation_id,
+            'from_user_id'      => Auth::id(),
+            'message'           => $request->message,
+            'is_read'           => false
         ]);
 
         $conversation = Conversation::find($conversation_id);

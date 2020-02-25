@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Auth;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 //Worker Type constants
 define('ALL_TYPES', -1);
@@ -69,14 +70,14 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = \Validator::make($request->all(), [
-            'username' => 'required|unique:users,username',
-            'password' => 'required',
-            'firstname' => 'required',
-            'lastname' => 'required',
-            'address' => 'required',
-            'current_lat' => 'numeric|required',
-            'current_long' => 'numeric|required',
+        $validator = Validator::make($request->all(), [
+            'username'      => 'required|unique:users,username',
+            'password'      => 'required',
+            'firstname'     => 'required',
+            'lastname'      => 'required',
+            'address'       => 'required',
+            'current_lat'   => 'numeric|required',
+            'current_long'  => 'numeric|required',
             'mobile_number' => 'numeric|regex:/(09)[0-9]{9}/',
             'email_address' => 'email|unique:users,email_address',
         ]);
@@ -86,18 +87,18 @@ class UserController extends Controller
         }
 
         $user = User::create([
-            'firstname' => $request->firstname,
-            'middlename' => $request->middlename,
-            'lastname' => $request->lastname,
-            'email_address' => $request->email_address,
-            'username' => $request->username,
-            'password' => Hash::make($request->password),
-            'address' => $request->address,
-            'current_long' => $request->current_long,
-            'current_lat' => $request->current_lat,
-            'is_worker' => false,
-            'profile_picture_url' => './assets/profile_pictures/default.jpg',
-            'mobile_number' => $request->mobile_number,
+            'firstname'             => $request->firstname,
+            'middlename'            => $request->middlename,
+            'lastname'              => $request->lastname,
+            'email_address'         => $request->email_address,
+            'username'              => $request->username,
+            'password'              => Hash::make($request->password),
+            'address'               => $request->address,
+            'current_long'          => $request->current_long,
+            'current_lat'           => $request->current_lat,
+            'is_worker'             => false,
+            'profile_picture_url'   => './assets/profile_pictures/default.jpg',
+            'mobile_number'         => $request->mobile_number,
         ]);
 
         $access_token = $user->createToken('BahayanihanAPI')->accessToken;
@@ -131,14 +132,14 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $validator = \Validator::make($request->all(), [
-            'password' => 'required',
-            'firstname' => 'required',
-            'lastname' => 'required',
-            'address' => 'required',
-            'current_lat' => 'numeric|required',
-            'current_long' => 'numeric|required',
-            'is_worker' => 'required|boolean',
+        $validator = Validator::make($request->all(), [
+            'password'      => 'required',
+            'firstname'     => 'required',
+            'lastname'      => 'required',
+            'address'       => 'required',
+            'current_lat'   => 'numeric|required',
+            'current_long'  => 'numeric|required',
+            'is_worker'     => 'required|boolean',
             'mobile_number' => 'numeric|regex:/(09)[0-9]{9}/',
         ]);
 
@@ -154,20 +155,20 @@ class UserController extends Controller
             ]);
         }
 
-        $user->firstname = $request->firstname;
-        $user->middlename = $request->middlename;
-        $user->lastname = $request->lastname;
-        $user->address = $request->address;
+        $user->firstname    = $request->firstname;
+        $user->middlename   = $request->middlename;
+        $user->lastname     = $request->lastname;
+        $user->address      = $request->address;
 
         if(!Hash::check($request->password, $user->password)) {
             $user->password = Hash::make($request->password);
         }
 
-        $user->current_long = $request->current_long;
-        $user->current_lat = $request->current_lat;
-        $user->is_worker = $request->is_worker;
-        $user->profile_picture_url = isset($request->profile_picture_url) ? $request->profile_picture_url : 'public/photos/profile/default.jpg';
-        $user->mobile_number = $request->mobile_number;
+        $user->current_long         = $request->current_long;
+        $user->current_lat          = $request->current_lat;
+        $user->is_worker            = $request->is_worker;
+        $user->profile_picture_url  = isset($request->profile_picture_url) ? $request->profile_picture_url : 'public/photos/profile/default.jpg';
+        $user->mobile_number        = $request->mobile_number;
 
         $user->save();
 
@@ -178,9 +179,9 @@ class UserController extends Controller
 
     public function updateLocation(Request $request)
     {
-        $validator = \Validator::make($request->all(), [
-            'current_lat' => 'numeric|required',
-            'current_long' => 'numeric|required',
+        $validator = Validator::make($request->all(), [
+            'current_lat'   => 'numeric|required',
+            'current_long'  => 'numeric|required',
         ]);
 
         if($validator->fails()) {
@@ -196,7 +197,7 @@ class UserController extends Controller
         }
 
         $user->current_long = $request->current_long;
-        $user->current_lat = $request->current_lat;
+        $user->current_lat  = $request->current_lat;
 
         $user->save();
 
