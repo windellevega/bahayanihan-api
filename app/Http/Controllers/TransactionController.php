@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
 
 //Transaction Status constants
 define('CREATED_T_STATUS', 1);
