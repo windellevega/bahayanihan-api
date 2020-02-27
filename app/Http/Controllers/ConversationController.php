@@ -24,7 +24,7 @@ class ConversationController extends Controller
         //$user->withCount('Conversations.unreadMessages');
         $user->load(['Conversations' => function($query) {
             $query->withCount('unreadMessages');
-        }, 
+        },
         'Conversations.latestMessage',
         'Conversations.Users' => function($query) {
                     $query->where('user_id', '!=', Auth::id());
@@ -55,9 +55,10 @@ class ConversationController extends Controller
         if(!isset($request->conversation_id)) {
             $conversation = Conversation::create();
 
+            // Adds the values within the array to the pivot table (user_conversations)
             $conversation->Users()->sync([Auth::id(), $request->to_user_id]);
 
-            $conversation->id = $conversation->id;
+            $conversation_id = $conversation->id;
         }
         else {
             $conversation_id = $request->conversation_id;

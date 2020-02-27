@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 //Transaction Status constants
 define('CREATED_T_STATUS', 1);
@@ -34,7 +35,36 @@ class TransactionController extends Controller
      */
     public function store(Request $request)
     {
-        
+        $validator = Validator::make($request->all(), [
+            'worker_id'         => 'required',
+            'skill_id'          => 'required',
+            'job_description'   => 'required',
+            'transaction_long'  => 'numeric|required',
+            'transaction_lat'   => 'numeric|required',
+            'total_cost'        => 'numeric|required',
+        ]);
+
+        if($validator->fails()) {
+            return response()->json($validator->errors()->all());
+        }
+
+        $transaction = Transaction::create([
+            'hailer_id'         => Auth::id(),
+            'worker_id'         => $request->worker_id,
+            'skill_id'          => $request->skill_id,
+            'job_description'   => $request->job_description,
+            'transaction_long'  => $request->transaction_long,
+            'transaction_lat'   => $request->transaction_lat,
+            'actions_taken'     => 'Sample Action',
+            'job_durations'     => 1,
+            'total_cost'        => $request->total_cost
+        ]);
+
+        $transaction->TransactionStatusHistory()->attach(CREATED_T_STATUS, ['remarks' => 'Transaction has been created.']);
+
+        return response()->json([
+            'message' => 'New transaction has been created.'
+        ]);
     }
 
     /**
@@ -45,7 +75,7 @@ class TransactionController extends Controller
      */
     public function show(Transaction $transaction)
     {
-        //
+
     }
 
     /**
@@ -57,7 +87,7 @@ class TransactionController extends Controller
      */
     public function update(Request $request, Transaction $transaction)
     {
-        //
+
     }
 
     /**
