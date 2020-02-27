@@ -8,7 +8,8 @@ class Transaction extends Model
 {
     protected $fillable = [
         'hailer_id', 'worker_id', 'skill_id', 'job_description',
-        'transaction_long', 'transaction_lat'
+        'transaction_long', 'transaction_lat', 'actions_taken',
+        'job_durations', 'total_cost',
     ];
     
     public function Hailer()

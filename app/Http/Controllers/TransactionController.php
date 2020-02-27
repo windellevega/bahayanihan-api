@@ -55,7 +55,7 @@ class TransactionController extends Controller
             'job_description'   => $request->job_description,
             'transaction_long'  => $request->transaction_long,
             'transaction_lat'   => $request->transaction_lat,
-            'actions_taken'     => 'Sample Action',
+            'actions_taken'     => '',
             'job_durations'     => 1,
             'total_cost'        => $request->total_cost
         ]);
