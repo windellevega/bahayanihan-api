@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Transaction extends Model
 {
     protected $fillable = [
-        'hailer_id', 'worker_id', 'skill_id', 'job_description',
+        'id', 'hailer_id', 'worker_id', 'skill_id', 'job_description',
         'transaction_long', 'transaction_lat', 'actions_taken',
         'job_durations', 'total_cost',
     ];
@@ -26,6 +26,13 @@ class Transaction extends Model
     {
         return $this->belongsToMany('App\TransactionStatus', 'transaction_status_details', 'transaction_id', 'transaction_status_id')
                 ->withPivot('remarks')
-                ->withTimestamps();
+                ->withTimestamps()
+                ->orderBy('transaction_status_details.created_at', 'desc');
+    }
+
+    public function latestStatus()
+    {
+        return $this->TransactionStatusHistory()
+                ->limit(1);
     }
 }

@@ -35,12 +35,13 @@ Route::group([
     Route::get('/conversations', 'ConversationController@index');
     Route::get('/conversation/{id}', 'ConversationController@show');
     Route::post('/message', 'ConversationController@store');
-    Route::get('/try', 'ConversationController@try');
+    // Route::get('/try', 'ConversationController@try');
 
     Route::post('/transaction', 'TransactionController@store');
     Route::get('/transactions', 'TransactionController@index');
+    
 });
-
+Route::get('/transaction/{transaction}', 'TransactionController@show');
 Route::post('/user/register', 'UserController@store');
 
 

@@ -33,16 +33,16 @@ class ConversationController extends Controller
         return response()->json($user);
     }
 
-    public function try()
-    {
-        $conv = Conversation::where('id',5)
-                    ->whereHas('Users', function($q) {
-                        $q->where('user_id', 2);
-                    })
-                    ->first()
-                    ->id;
-        return response()->json($conv);
-    }
+    // public function try()
+    // {
+    //     $conv = Conversation::where('id',5)
+    //                 ->whereHas('Users', function($q) {
+    //                     $q->where('user_id', 2);
+    //                 })
+    //                 ->first()
+    //                 ->id;
+    //     return response()->json($conv);
+    // }
 
     /**
      * Store a newly created resource in storage.

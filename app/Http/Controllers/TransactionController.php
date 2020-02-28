@@ -28,7 +28,7 @@ class TransactionController extends Controller
         $transactions = Transaction::where('hailer_id', Auth::id())
                             ->orWhere('worker_id', Auth::id())
                             ->get();
-        $transactions->load('TransactionStatusHistory');
+        $transactions->load('latestStatus');
         $transactions->load('Hailer');
         $transactions->load('Worker');
 
@@ -83,7 +83,11 @@ class TransactionController extends Controller
      */
     public function show(Transaction $transaction)
     {
+        $transaction->load('latestStatus');
+        $transaction->load('Hailer');
+        $transaction->load('Worker');
 
+        return response()->json($transaction);
     }
 
     /**
@@ -95,7 +99,7 @@ class TransactionController extends Controller
      */
     public function update(Request $request, Transaction $transaction)
     {
-
+        
     }
 
     /**
