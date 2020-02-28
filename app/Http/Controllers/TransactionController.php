@@ -24,7 +24,15 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        //
+        // Display all transactions of loggedin user
+        $transactions = Transaction::where('hailer_id', Auth::id())
+                            ->orWhere('worker_id', Auth::id())
+                            ->get();
+        $transactions->load('TransactionStatusHistory');
+        $transactions->load('Hailer');
+        $transactions->load('Worker');
+
+        return response()->json($transactions);
     }
 
     /**

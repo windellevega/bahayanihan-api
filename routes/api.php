@@ -38,6 +38,7 @@ Route::group([
     Route::get('/try', 'ConversationController@try');
 
     Route::post('/transaction', 'TransactionController@store');
+    Route::get('/transactions', 'TransactionController@index');
 });
 
 Route::post('/user/register', 'UserController@store');
