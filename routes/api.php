@@ -39,9 +39,10 @@ Route::group([
 
     Route::post('/transaction', 'TransactionController@store');
     Route::get('/transactions', 'TransactionController@index');
-    
+    Route::get('/transaction/{transaction}', 'TransactionController@show');
+    Route::put('/transaction/updatestatus/{transaction}', 'TransactionController@updateTransactionStatus');
 });
-Route::get('/transaction/{transaction}', 'TransactionController@show');
+
 Route::post('/user/register', 'UserController@store');
 
 

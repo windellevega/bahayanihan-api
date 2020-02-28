@@ -102,6 +102,48 @@ class TransactionController extends Controller
         
     }
 
+    public function updateTransactionStatus(Request $request, Transaction $transaction)
+    {
+        $validator = Validator::make($request->all(), [
+            'status' => 'required:numeric',
+        ]);
+
+        if($validator->fails()) {
+            return response()->json($validator->errors()->all());
+        }
+
+        switch($request->status){
+            case 1:
+                $remark = 'Transaction has been created.';
+            break;
+            case 2:
+                $remark = 'Transaction has been accepted.';
+            break;
+            case 3:
+                $remark = 'Transaction is on-going.';
+            break;
+            case 4:
+                $remark = 'Transaction has been finished.';
+            break;
+            case 5:
+                $remark = 'Client has made payment for the transaction.';
+            break;
+            case 6:
+                $remark = 'Worker has rejected the transacion.';
+            break;
+            default:
+                return abort(response()->json([
+                    'message' => 'Invalid transacion status.'
+                ], 400));
+        }
+
+        $transaction->TransactionStatusHistory()->attach($request->status, ['remarks' => $remark]);
+
+        return response()->json([
+            'message' => 'Transaction status has been updated.'
+        ]);
+    }
+
     /**
      * Remove the specified resource from storage.
      *
