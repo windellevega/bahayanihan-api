@@ -40,6 +40,7 @@ Route::group([
     Route::post('/transaction', 'TransactionController@store');
     Route::get('/transactions', 'TransactionController@index');
     Route::get('/transaction/{transaction}', 'TransactionController@show');
+    Route::put('/transaction/{transaction}', 'TransactionController@update');
     Route::put('/transaction/updatestatus/{transaction}', 'TransactionController@updateTransactionStatus');
 });
 

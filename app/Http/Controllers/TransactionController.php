@@ -99,7 +99,20 @@ class TransactionController extends Controller
      */
     public function update(Request $request, Transaction $transaction)
     {
-        
+        $validator = Validator::make($request->all(), [
+            'job_description'   => 'required',
+            'total_cost'        => 'numeric|required'
+        ]);
+
+        $transaction->job_description   = $request->job_description;
+        $transaction->actions_taken     = (isset($request->actions_taken) ? $request->actions_taken : '' );
+        $transaction->total_cost        = $request->total_cost;
+
+        $transaction->save();
+
+        return response()->json([
+            'message' => 'Transaction details has been updated.'
+        ]);
     }
 
     public function updateTransactionStatus(Request $request, Transaction $transaction)
