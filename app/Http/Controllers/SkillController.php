@@ -34,12 +34,12 @@ class SkillController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  App\Skill  $skill
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Skill $skill)
     {
-        //
+        return response()->json($skill);
     }
 
     /**

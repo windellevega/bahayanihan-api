@@ -27,8 +27,10 @@ class TransactionController extends Controller
         // Display all transactions of loggedin user
         $transactions = Transaction::where('hailer_id', Auth::id())
                             ->orWhere('worker_id', Auth::id())
+                            ->orderBy('created_at', 'desc')
                             ->get();
-        $transactions->load('latestStatus');
+        $transactions->load('Skill');
+        $transactions->load('transactionStatusHistory');
         $transactions->load('Hailer');
         $transactions->load('Worker');
 

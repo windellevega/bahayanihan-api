@@ -22,17 +22,16 @@ class Transaction extends Model
         return $this->belongsTo('App\User', 'worker_id');
     }
 
+    public function Skill()
+    {
+        return $this->belongsTo('App\Skill', 'skill_id');
+    }
+
     public function TransactionStatusHistory()
     {
         return $this->belongsToMany('App\TransactionStatus', 'transaction_status_details', 'transaction_id', 'transaction_status_id')
                 ->withPivot('remarks')
                 ->withTimestamps()
                 ->orderBy('transaction_status_details.created_at', 'desc');
-    }
-
-    public function latestStatus()
-    {
-        return $this->TransactionStatusHistory()
-                ->limit(1);
     }
 }

@@ -31,6 +31,7 @@ Route::group([
     Route::put('/user-location', 'UserController@updateLocation');
 
     Route::middleware('auth:api')->get('/skills', 'SkillController@index');
+    Route::middleware('auth:api')->get('/skill/{skill}', 'SkillController@show');
 
     Route::get('/conversations', 'ConversationController@index');
     Route::get('/conversation/{id}', 'ConversationController@show');
