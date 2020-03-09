@@ -15,7 +15,7 @@ class TransactionStatusSeeder extends Seeder
         $transaction_statuses = [
             ['status' => 'Created'],
             ['status' => 'Accepted'],
-            ['status' => 'Finished'],
+            ['status' => 'Completed'],
             ['status' => 'Paid'],
             ['status' => 'Rejected'],
         ];
