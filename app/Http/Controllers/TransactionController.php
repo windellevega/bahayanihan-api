@@ -10,10 +10,9 @@ use Illuminate\Support\Facades\Validator;
 //Transaction Status constants
 define('CREATED_T_STATUS', 1);
 define('ACCEPTED_T_STATUS', 2);
-define('ONGOING_T_STATUS', 3);
-define('FINISHED_T_STATUS', 4);
-define('PAID_T_STATUS', 5);
-define('REJECTED_T_STATUS', 6);
+define('FINISHED_T_STATUS', 3);
+define('PAID_T_STATUS', 4);
+define('REJECTED_T_STATUS', 5);
 
 class TransactionController extends Controller
 {
@@ -135,15 +134,12 @@ class TransactionController extends Controller
                 $remark = 'Transaction has been accepted.';
             break;
             case 3:
-                $remark = 'Transaction is on-going.';
-            break;
-            case 4:
                 $remark = 'Transaction has been finished.';
             break;
-            case 5:
+            case 4:
                 $remark = 'Client has made payment for the transaction.';
             break;
-            case 6:
+            case 5:
                 $remark = 'Worker has rejected the transacion.';
             break;
             default:
