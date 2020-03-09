@@ -25,6 +25,7 @@ Route::group([
 ], function() {
     Route::get('/users/{type?}/{skill?}', 'UserController@index');
 
+    Route::get('/user/role', 'UserController@getUserRole');
     Route::get('/user/{user}', 'UserController@show');
     Route::put('/user/{id}', 'UserController@update');
     Route::get('/profile', 'UserController@loggedInUserInfo');

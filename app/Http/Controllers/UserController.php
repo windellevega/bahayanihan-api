@@ -114,12 +114,18 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return response()->json($user->load('UserSkills.Skills'));
+        return response()->json($user->load('Skills'));
     }
 
     public function loggedInUserInfo()
     {
         $user = User::find(Auth::id());
+        return response()->json($user);
+    }
+
+    public function getUserRole()
+    {
+        $user = User::findOrFail(Auth::id(), ['is_worker']);
         return response()->json($user);
     }
 
