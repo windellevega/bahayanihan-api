@@ -84,6 +84,7 @@ class TransactionController extends Controller
      */
     public function show(Transaction $transaction)
     {
+        $transaction->load('Skill');
         $transaction->load('transactionStatusHistory');
         $transaction->load('Hailer');
         $transaction->load('Worker');
