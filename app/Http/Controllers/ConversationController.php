@@ -113,10 +113,11 @@ class ConversationController extends Controller
     }
 
     public function showConversationWithUser($id) {
-        $conversation = Conversation::whereHas('Users', function($q) use ($id) {
-            $q->where('user_id', $id)
-                ->where('user_id', Auth::id());
-        })->get();
+        $conversation = Conversation::whereHas('Users', function($q) {
+                            $q->where('user_id', Auth::id());
+                        })->whereHas('Users', function($q) use ($id) {
+                            $q->where('user_id', $id);
+                        })->get();
 
         return response()->json($conversation);
     }
