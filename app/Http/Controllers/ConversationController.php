@@ -112,6 +112,15 @@ class ConversationController extends Controller
         return response()->json($messages);
     }
 
+    public function showConversationWithUser($id) {
+        $conversation = Conversation::whereHas('Users', function($q) use ($id) {
+            $q->where('user_id', $id)
+                ->where('user_id', Auth::id());
+        })->get();
+
+        return response()->json($conversation);
+    }
+
     /**
      * Update the specified resource in storage.
      *
