@@ -15,7 +15,8 @@ class Conversation extends Model
 
     public function Users()
     {
-        return $this->belongsToMany('App\User', 'user_conversations', 'conversation_id', 'user_id');
+        return $this->belongsToMany('App\User', 'user_conversations', 'conversation_id', 'user_id')
+                ->withTimestamps();
     }
 
     public function latestMessage()

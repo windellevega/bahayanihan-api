@@ -60,6 +60,7 @@ class User extends Authenticatable
     }
 
     public function Conversations() {
-        return $this->belongsToMany('App\Conversation', 'user_conversations', 'user_id', 'conversation_id');
+        return $this->belongsToMany('App\Conversation', 'user_conversations', 'user_id', 'conversation_id')
+                ->withTimestamps();
     }
 }
