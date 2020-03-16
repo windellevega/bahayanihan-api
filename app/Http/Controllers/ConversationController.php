@@ -117,7 +117,7 @@ class ConversationController extends Controller
                             $q->where('user_id', Auth::id());
                         })->whereHas('Users', function($q) use ($id) {
                             $q->where('user_id', $id);
-                        })->get();
+                        })->first();
 
         return response()->json($conversation);
     }
