@@ -33,6 +33,25 @@ class ConversationController extends Controller
         return response()->json($user);
     }
 
+    public function countConversationsWithUnreadMessages()
+    {
+        $conversationsWithUnread = 0;
+
+        $user = User::find(Auth::id());
+        $user->loadCount('Conversations');
+
+        foreach($user->conversations as $conversation) {
+            $conversation->loadCount('unreadMessages');
+            if($conversation->unread_messages_count) {
+                $conversationsWithUnread++;
+            }
+        }
+
+        return response()->json([
+            'conversations_with_unread' => $conversationsWithUnread
+        ]);
+    }
+
     // public function try()
     // {
     //     $conv = Conversation::where('id',5)

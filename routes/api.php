@@ -38,6 +38,8 @@ Route::group([
     Route::get('/conversation/{id}', 'ConversationController@show');
     Route::get('/conversation-with-user/{id}', 'ConversationController@showConversationWithUser');
     Route::post('/message', 'ConversationController@store');
+    Route::put('/messages/mark-as-read/{id}', 'ConversationController@markMessagesAsRead');
+    Route::get('/conversations/with-unread', 'ConversationController@countConversationsWithUnreadMessages');
     
     // Route::get('/try', 'ConversationController@try');
 
@@ -47,7 +49,7 @@ Route::group([
     Route::put('/transaction/{transaction}', 'TransactionController@update');
     Route::put('/transaction/status/{transaction}', 'TransactionController@updateTransactionStatus');
 });
-Route::put('/messages/mark-as-read/{id}', 'ConversationController@markMessagesAsRead');
+
 Route::post('/user/register', 'UserController@store');
 
 
