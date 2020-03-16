@@ -122,6 +122,16 @@ class ConversationController extends Controller
         return response()->json($conversation);
     }
 
+    public function markMessagesAsRead(Request $request, $id) {
+        $messages = Message::where('conversation_id', $id)
+                        ->where('from_user_id', $request->from_user_id)
+                        ->update(['is_read' => 1]);
+
+        return response()->json([
+            'message' => 'Marked messages as read.'
+        ]);
+    }
+
     /**
      * Update the specified resource in storage.
      *
