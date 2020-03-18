@@ -7,7 +7,8 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Conversation;
 use App\Message;
-use App\Events\NewMessage;
+use App\Events\NewMessageConversation;
+use App\Events\NewMessageUser;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
@@ -106,7 +107,8 @@ class ConversationController extends Controller
                     }])
                     ->first();
 
-        broadcast(new NewMessage($message))->toOthers();
+        broadcast(new NewMessageConversation($message))->toOthers();
+        broadcast(new NewMessageUser($message))->toOthers();
 
         return response()->json($message);
     }

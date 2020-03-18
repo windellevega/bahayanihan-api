@@ -4,17 +4,13 @@ namespace App\Events;
 
 use App\Message;
 
-use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
-use Carbon\Carbon;
 
-class NewMessage implements ShouldBroadcastNow
+class NewMessageUser implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -37,7 +33,7 @@ class NewMessage implements ShouldBroadcastNow
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('conversation.' . $this->message->conversation_id);
+        return new PrivateChannel('message-log.' . $this->message->to_user_id);
     }
 
     public function broadcastWith()
