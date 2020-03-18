@@ -25,6 +25,6 @@ Broadcast::channel('conversation.{id}', function ($user, $id) {
                             ->id;
 });
 
-Broadcast::channel('message-log.{id}', function ($id) {
-    return $id == Auth::id();
+Broadcast::channel('message-log.{id}', function ($user, $id) {
+    return $id == $user->id;
 });
