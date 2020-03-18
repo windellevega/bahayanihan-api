@@ -106,6 +106,7 @@ class ConversationController extends Controller
                         $query->select('id', 'firstname', 'lastname', 'profile_picture_url');
                     }])
                     ->first();
+        $message->to_user_id = $request->to_user_id;
 
         broadcast(new NewMessageConversation($message))->toOthers();
         broadcast(new NewMessageUser($message))->toOthers();

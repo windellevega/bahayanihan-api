@@ -9,7 +9,6 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
-use Illuminate\Support\Facades\Auth;
 
 class NewMessageUser implements ShouldBroadcastNow
 {
@@ -34,7 +33,7 @@ class NewMessageUser implements ShouldBroadcastNow
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('message-log.' . Auth::id());
+        return new PrivateChannel('message-log.' . $this->message->to_user_id);
     }
 
     public function broadcastWith()
