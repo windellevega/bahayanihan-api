@@ -1,5 +1,4 @@
 <?php
-use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,4 +26,10 @@ Broadcast::channel('conversation.{id}', function ($user, $id) {
 
 Broadcast::channel('message-log.{id}', function ($user, $id) {
     return $id == $user->id;
+});
+
+Broadcast::channel('transactions.{id}', function ($user, $id) {
+    return $user->id == \App\Transaction::where('worker_id', $id)
+                            ->first()
+                            ->worker_id;
 });

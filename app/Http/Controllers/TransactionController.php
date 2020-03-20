@@ -6,6 +6,7 @@ use App\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use App\Events\NewTransaction;
 
 //Transaction Status constants
 define('CREATED_T_STATUS', 1);
@@ -30,8 +31,6 @@ class TransactionController extends Controller
                             ->get();
         $transactions->load('Skill');
         $transactions->load('transactionStatusHistory');
-        $transactions->load('Hailer');
-        $transactions->load('Worker');
 
         return response()->json($transactions);
     }
@@ -70,6 +69,11 @@ class TransactionController extends Controller
         ]);
 
         $transaction->TransactionStatusHistory()->attach(CREATED_T_STATUS, ['remarks' => 'Transaction has been created.']);
+
+        $transaction->load('Skill');
+        $transaction->load('transactionStatusHistory');
+
+        broadcast(new NewTransaction($transaction))->toOthers();
 
         return response()->json([
             'message' => 'New transaction has been created.'
