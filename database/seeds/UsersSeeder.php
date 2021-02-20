@@ -25,7 +25,7 @@ class UsersSeeder extends Seeder
                 'current_long' => '121.764786',
                 'current_lat' => '17.643702',
                 'is_worker' => 0,
-                'profile_picture_url' => 'public/photos/profile/default.jpg',
+                'profile_picture_url' => 'assets/profile_pictures/windellevega.jpg',
                 'mobile_number' => '09171234567'
             ],
             [
@@ -39,7 +39,7 @@ class UsersSeeder extends Seeder
                 'current_long' => '121.726320',
                 'current_lat' => '17.618404',
                 'is_worker' => 1,
-                'profile_picture_url' => 'public/photos/profile/default.jpg',
+                'profile_picture_url' => 'assets/profile_pictures/apolita.jpg',
                 'mobile_number' => '09179876543'
             ]
         ];
