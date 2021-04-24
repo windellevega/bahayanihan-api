@@ -1,9 +1,9 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ConversationController;
 use App\Http\Controllers\SkillController;
 use App\Http\Controllers\TransactionController;
-use Illuminate\Http\Request;
 use App\Http\Controllers\UserController;
 /*
 |--------------------------------------------------------------------------
