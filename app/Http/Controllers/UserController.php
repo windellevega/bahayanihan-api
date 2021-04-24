@@ -25,32 +25,61 @@ class UserController extends Controller
      */
     public function index($type = ALL_TYPES, $skill = ALL_SKILLS)
     {
-        if($type == ALL_TYPES) {
-            $users = User::all();
-        }
-        else if($type == NON_WORKERS) {
-            $users = User::where('is_worker', 0)
-                        ->get();
-        }
-        else if($type == WORKERS) {
-            if($skill == ALL_SKILLS) {
-                $users = User::where('is_worker', 1)
+        // if($type == ALL_TYPES) {
+        //     $users = User::all();
+        // }
+        // else if($type == NON_WORKERS) {
+        //     $users = User::where('is_worker', 0)
+        //                 ->get();
+        // }
+        // else if($type == WORKERS) {
+        //     if($skill == ALL_SKILLS) {
+        //         $users = User::where('is_worker', 1)
+        //                     ->get();
+        //         $users->load('Skills');
+        //     }
+        //     else {
+        //         $users = User::where('is_worker', 1)
+        //                     ->whereHas('Skills', function($q) use ($skill) {
+        //                         $q->where('skill_id', $skill);
+        //                     })
+        //                     ->get();
+        //         $users->load('Skills');
+        //     }
+        // }
+        // else {
+        //     return response()->json([
+        //         'error' => 'Invalid user type.'
+        //     ]);
+        // }
+
+        switch($type) {
+            case ALL_TYPES:
+                $users = User::all();
+                break;
+            case NON_WORKERS:
+                $users = User::where('is_worker', 0)
                             ->get();
+                break;
+            case WORKERS:
+                if($skill == ALL_SKILLS) {
+                    $users = User::where('is_worker', 1)
+                                ->get();
+                }
+                else {
+                    $users = User::where('is_worker', 1)
+                                ->whereHas('Skills', function($q) use ($skill) {
+                                    $q->where('skill_id', $skill);
+                                })
+                                ->get();
+                }
+
                 $users->load('Skills');
-            }
-            else {
-                $users = User::where('is_worker', 1)
-                            ->whereHas('Skills', function($q) use ($skill) {
-                                $q->where('skill_id', $skill);
-                            })
-                            ->get();
-                $users->load('Skills');
-            }
-        }
-        else {
-            return response()->json([
-                'error' => 'Invalid user type.'
-            ]);
+                break;
+            default:
+                return response()->json([
+                    'error' => 'Invalid user type.'
+                ]);
         }
 
         if(!$users) {
