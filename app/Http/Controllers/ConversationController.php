@@ -23,11 +23,11 @@ class ConversationController extends Controller
     {
         $user = User::find(Auth::id());
         //$user->withCount('Conversations.unreadMessages');
-        $user->load(['Conversations' => function($query) {
+        $user->load(['conversations' => function($query) {
             $query->withCount('unreadMessages');
         },
-        'Conversations.latestMessage',
-        'Conversations.Users' => function($query) {
+        'conversations.latestMessage',
+        'conversations.users' => function($query) {
                     $query->where('user_id', '!=', Auth::id());
         }]);
 
@@ -39,7 +39,7 @@ class ConversationController extends Controller
         $conversationsWithUnread = 0;
 
         $user = User::find(Auth::id());
-        $user->loadCount('Conversations');
+        $user->loadCount('conversations');
 
         foreach($user->conversations as $conversation) {
             $conversation->loadCount('unreadMessages');
@@ -76,7 +76,7 @@ class ConversationController extends Controller
             $conversation = Conversation::create();
 
             // Adds the values within the array to the pivot table (user_conversations)
-            $conversation->Users()->sync([Auth::id(), $request->to_user_id]);
+            $conversation->users()->sync([Auth::id(), $request->to_user_id]);
 
             $conversation_id = $conversation->id;
         }
@@ -102,10 +102,11 @@ class ConversationController extends Controller
         }
 
         $message = Message::where('id', $message->id)
-                    ->with(['User'=> function($query) {
+                    ->with(['user'=> function($query) {
                         $query->select('id', 'firstname', 'lastname', 'profile_picture_url');
                     }])
                     ->first();
+
         $message->to_user_id = $request->to_user_id;
 
         broadcast(new NewMessageConversation($message))->toOthers();
@@ -123,11 +124,12 @@ class ConversationController extends Controller
     public function show($id)
     {
         $messages = Conversation::where('id', $id)
-                        ->whereHas('Users', function($q){
+                        ->whereHas('ssers', function($q){
                             $q->where('user_id', Auth::id());
                         })
                         ->first();
-        $messages->load(['Messages.User' => function($query) {
+                        
+        $messages->load(['messages.user' => function($query) {
             $query->select('id', 'firstname', 'lastname', 'profile_picture_url');
         }]);
 
@@ -135,9 +137,9 @@ class ConversationController extends Controller
     }
 
     public function showConversationWithUser($id) {
-        $conversation = Conversation::whereHas('Users', function($q) {
+        $conversation = Conversation::whereHas('users', function($q) {
                             $q->where('user_id', Auth::id());
-                        })->whereHas('Users', function($q) use ($id) {
+                        })->whereHas('users', function($q) use ($id) {
                             $q->where('user_id', $id);
                         })->first();
 

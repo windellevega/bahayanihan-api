@@ -11,12 +11,12 @@ class Message extends Model
         'message', 'is_read'
     ];
 
-    public function User()
+    public function user()
     {
         return $this->belongsTo('App\User', 'from_user_id');
     }
 
-    public function Conversation()
+    public function conversation()
     {
         return $this->belongsTo('App\Conversation', 'conversation_id');
     }

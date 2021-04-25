@@ -10,7 +10,7 @@ class ApplicationStatus extends Model
         'status',
     ];
 
-    public function WorkerApplications()
+    public function workerApplications()
     {
         return $this->belongsToMany('App\WorkerApplication');
     }

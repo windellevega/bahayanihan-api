@@ -10,7 +10,7 @@ class Credential extends Model
         'user_skill_id', 'credential_details',
     ];
 
-    public function UserSkill()
+    public function userSkill()
     {
         return $this->belongsTo('App\User');
     }

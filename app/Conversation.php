@@ -7,13 +7,13 @@ use Illuminate\Support\Facades\Auth;
 
 class Conversation extends Model
 {
-    public function Messages()
+    public function messages()
     {
         return $this->hasMany('App\Message')
                 ->orderBy('created_at');
     }
 
-    public function Users()
+    public function users()
     {
         return $this->belongsToMany('App\User', 'user_conversations', 'conversation_id', 'user_id')
                 ->withTimestamps();

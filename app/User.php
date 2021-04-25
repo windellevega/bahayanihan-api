@@ -37,29 +37,29 @@ class User extends Authenticatable
                 ->orWhere('email_address', $username)->first();
     }
 
-    public function Skills()
+    public function skills()
     {
         return $this->belongsToMany('App\Skill', 'user_skills', 'user_id', 'skill_id')
                 ->withPivot('years_experience')
                 ->withTimestamps();
     }
 
-    public function Transactions()
+    public function transactions()
     {
         return $this->hasMany('App\Transaction');
     }
 
-    public function Credentials()
+    public function credentials()
     {
         return $this->hasMany('App\Credential');
     }
 
-    public function WorkerApplications()
+    public function workerApplications()
     {
         return $this->hasMany('App\WorkerApplication');
     }
 
-    public function Conversations() {
+    public function conversations() {
         return $this->belongsToMany('App\Conversation', 'user_conversations', 'user_id', 'conversation_id')
                 ->withTimestamps();
     }

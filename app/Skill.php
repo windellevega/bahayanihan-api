@@ -10,7 +10,7 @@ class Skill extends Model
         'skill_name', 'skill_rate', 'picture_url'
     ];
 
-    public function Users()
+    public function users()
     {
         return $this->belongsToMany('App\User')
                 ->withTimestamps();

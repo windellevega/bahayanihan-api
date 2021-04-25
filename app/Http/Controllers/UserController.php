@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\RegisterUserRequest;
+use App\Http\Requests\UpdateLocationRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\User;
 use Illuminate\Http\Request;
@@ -70,13 +71,13 @@ class UserController extends Controller
                 }
                 else {
                     $users = User::where('is_worker', 1)
-                                ->whereHas('Skills', function($q) use ($skill) {
+                                ->whereHas('skills', function($q) use ($skill) {
                                     $q->where('skill_id', $skill);
                                 })
                                 ->get();
                 }
 
-                $users->load('Skills');
+                $users->load('skills');
                 break;
             default:
                 return response()->json([
@@ -129,12 +130,12 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return response()->json($user->load('Skills'));
+        return response()->json($user->load('skills'));
     }
 
     public function loggedInUserInfo()
     {
-        $user = User::find(Auth::id());
+        $user = User::findOrFail(Auth::id());
         return response()->json($user);
     }
 
@@ -177,7 +178,7 @@ class UserController extends Controller
         ]);
     }
 
-    public function updateLocation(Request $request)
+    public function updateLocation(UpdateLocationRequest $request)
     {
         $user = User::findOrFail(Auth::id()); //replace with Auth::id();
 

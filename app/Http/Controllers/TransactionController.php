@@ -32,7 +32,8 @@ class TransactionController extends Controller
                             ->orWhere('worker_id', Auth::id())
                             ->orderBy('created_at', 'desc')
                             ->get();
-        $transactions->load('Skill');
+
+        $transactions->load('skill');
         $transactions->load('transactionStatusHistory');
 
         return response()->json($transactions);
@@ -58,10 +59,9 @@ class TransactionController extends Controller
             'total_cost'        => $request->total_cost
         ]);
 
-        $transaction->TransactionStatusHistory()->attach(CREATED_T_STATUS, ['remarks' => 'Transaction has been created.']);
+        $transaction->transactionStatusHistory()->attach(CREATED_T_STATUS, ['remarks' => 'Transaction has been created.']);
 
-        $transaction->load('Skill');
-        $transaction->load('transactionStatusHistory');
+        $transaction->load('skill', 'transactionStatusHistory');
 
         broadcast(new NewTransaction($transaction))->toOthers();
 
@@ -78,10 +78,11 @@ class TransactionController extends Controller
      */
     public function show(Transaction $transaction)
     {
-        $transaction->load('Skill');
-        $transaction->load('transactionStatusHistory');
-        $transaction->load('Hailer');
-        $transaction->load('Worker');
+        // $transaction->load('Skill');
+        // $transaction->load('transactionStatusHistory');
+        // $transaction->load('Hailer');
+        // $transaction->load('Worker');
+        $transaction->load('skill', 'transactionStatusHistory', 'hailer', 'worker');
 
         return response()->json($transaction);
     }
@@ -95,11 +96,7 @@ class TransactionController extends Controller
      */
     public function update(UpdateTransactionRequest $request, Transaction $transaction)
     {
-        $transaction->job_description   = $request->job_description;
-        $transaction->actions_taken     = (isset($request->actions_taken) ? $request->actions_taken : '' );
-        $transaction->total_cost        = $request->total_cost;
-
-        $transaction->save();
+        $transaction->update($request->validated());
 
         return response()->json([
             'message' => 'Transaction details has been updated.'
@@ -130,7 +127,7 @@ class TransactionController extends Controller
                 ], 400));
         }
 
-        $transaction->TransactionStatusHistory()->attach($request->status, ['remarks' => $remark]);
+        $transaction->transactionStatusHistory()->attach($request->status, ['remarks' => $remark]);
 
         return response()->json([
             'message' => 'Transaction status has been updated.'

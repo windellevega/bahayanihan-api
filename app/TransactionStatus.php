@@ -10,7 +10,7 @@ class TransactionStatus extends Model
         'status',
     ];
 
-    public function Transactions()
+    public function transactions()
     {
         return $this->belongsToMany('App\Transaction')
                 ->withTimestamps();

@@ -12,22 +12,22 @@ class Transaction extends Model
         'job_durations', 'total_cost',
     ];
     
-    public function Hailer()
+    public function hailer()
     {
         return $this->belongsTo('App\User', 'hailer_id');
     }
 
-    public function Worker()
+    public function worker()
     {
         return $this->belongsTo('App\User', 'worker_id');
     }
 
-    public function Skill()
+    public function skill()
     {
         return $this->belongsTo('App\Skill', 'skill_id');
     }
 
-    public function TransactionStatusHistory()
+    public function transactionStatusHistory()
     {
         return $this->belongsToMany('App\TransactionStatus', 'transaction_status_details', 'transaction_id', 'transaction_status_id')
                 ->withPivot('remarks')
