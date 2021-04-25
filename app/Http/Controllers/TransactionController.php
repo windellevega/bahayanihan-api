@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Events\NewTransaction;
+use App\Http\Requests\StoreTransactionRequest;
+use App\Http\Requests\UpdateTransactionRequest;
+use App\Http\Requests\UpdateTransactionStatusRequest;
 
 //Transaction Status constants
 define('CREATED_T_STATUS', 1);
@@ -41,21 +44,8 @@ class TransactionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreTransactionRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'worker_id'         => 'required',
-            'skill_id'          => 'required',
-            'job_description'   => 'required',
-            'transaction_long'  => 'numeric|required',
-            'transaction_lat'   => 'numeric|required',
-            'total_cost'        => 'numeric|required',
-        ]);
-
-        if($validator->fails()) {
-            return response()->json($validator->errors()->all());
-        }
-
         $transaction = Transaction::create([
             'hailer_id'         => Auth::id(),
             'worker_id'         => $request->worker_id,
@@ -103,13 +93,8 @@ class TransactionController extends Controller
      * @param  \App\Transaction  $transaction
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Transaction $transaction)
+    public function update(UpdateTransactionRequest $request, Transaction $transaction)
     {
-        $validator = Validator::make($request->all(), [
-            'job_description'   => 'required',
-            'total_cost'        => 'numeric|required'
-        ]);
-
         $transaction->job_description   = $request->job_description;
         $transaction->actions_taken     = (isset($request->actions_taken) ? $request->actions_taken : '' );
         $transaction->total_cost        = $request->total_cost;
@@ -121,16 +106,8 @@ class TransactionController extends Controller
         ]);
     }
 
-    public function updateTransactionStatus(Request $request, Transaction $transaction)
+    public function updateTransactionStatus(UpdateTransactionStatusRequest $request, Transaction $transaction)
     {
-        $validator = Validator::make($request->all(), [
-            'status' => 'required:numeric',
-        ]);
-
-        if($validator->fails()) {
-            return response()->json($validator->errors()->all());
-        }
-
         switch($request->status){
             case 1:
                 $remark = 'Transaction has been created.';

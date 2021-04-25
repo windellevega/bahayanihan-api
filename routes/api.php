@@ -30,7 +30,7 @@ Route::group([
 
     Route::get('/user/role', [UserController::class, 'getUserRole']);
     Route::get('/user/{user}', [UserController::class, 'show']);
-    Route::put('/user/{id}', [UserController::class, 'update']);
+    Route::put('/user/{user}', [UserController::class, 'update']);
     Route::get('/profile', [UserController::class, 'LoggedInUserInfo']);
     Route::put('/user-location', [UserController::class, 'updateLocation']);
 

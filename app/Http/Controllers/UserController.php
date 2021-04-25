@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RegisterUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -97,24 +99,8 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(RegisterUserRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'username'      => 'required|unique:users,username',
-            'password'      => 'required',
-            'firstname'     => 'required',
-            'lastname'      => 'required',
-            'address'       => 'required',
-            'current_lat'   => 'numeric|required',
-            'current_long'  => 'numeric|required',
-            'mobile_number' => 'numeric|regex:/(09)[0-9]{9}/',
-            'email_address' => 'email|unique:users,email_address',
-        ]);
-
-        if($validator->fails()) {
-            return response()->json($validator->errors()->all());
-        }
-
         $user = User::create([
             'firstname'             => $request->firstname,
             'middlename'            => $request->middlename,
@@ -165,30 +151,9 @@ class UserController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateUserRequest $request, $id)
     {
-        $validator = Validator::make($request->all(), [
-            'password'      => 'required',
-            'firstname'     => 'required',
-            'lastname'      => 'required',
-            'address'       => 'required',
-            'current_lat'   => 'numeric|required',
-            'current_long'  => 'numeric|required',
-            'is_worker'     => 'required|boolean',
-            'mobile_number' => 'numeric|regex:/(09)[0-9]{9}/',
-        ]);
-
-        if($validator->fails()) {
-            return response()->json($validator->errors()->all());
-        }
-
-        $user = User::find($id); //replace with Auth::id();
-
-        if(!$user) {
-            return response()->json([
-                'error' => 'User not found.'
-            ]);
-        }
+        $user = User::findOrFail($id); //replace with Auth::id();
 
         $user->firstname    = $request->firstname;
         $user->middlename   = $request->middlename;
@@ -214,22 +179,7 @@ class UserController extends Controller
 
     public function updateLocation(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'current_lat'   => 'numeric|required',
-            'current_long'  => 'numeric|required',
-        ]);
-
-        if($validator->fails()) {
-            return response()->json($validator->errors()->all());
-        }
-
-        $user = User::find(Auth::id()); //replace with Auth::id();
-
-        if(!$user) {
-            return response()->json([
-                'error' => 'User not found.'
-            ]);
-        }
+        $user = User::findOrFail(Auth::id()); //replace with Auth::id();
 
         $user->current_long = $request->current_long;
         $user->current_lat  = $request->current_lat;
