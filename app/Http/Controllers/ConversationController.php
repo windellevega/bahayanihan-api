@@ -124,7 +124,7 @@ class ConversationController extends Controller
     public function show($id)
     {
         $messages = Conversation::where('id', $id)
-                        ->whereHas('ssers', function($q){
+                        ->whereHas('users', function($q){
                             $q->where('user_id', Auth::id());
                         })
                         ->first();
