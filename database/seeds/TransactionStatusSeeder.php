@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\TransactionStatus;
+use App\Models\TransactionStatus;
 
 class TransactionStatusSeeder extends Seeder
 {

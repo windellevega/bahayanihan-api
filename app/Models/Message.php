@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -13,11 +13,11 @@ class Message extends Model
 
     public function user()
     {
-        return $this->belongsTo('App\User', 'from_user_id');
+        return $this->belongsTo(User::class, 'from_user_id');
     }
 
     public function conversation()
     {
-        return $this->belongsTo('App\Conversation', 'conversation_id');
+        return $this->belongsTo(User::class, 'conversation_id');
     }
 }

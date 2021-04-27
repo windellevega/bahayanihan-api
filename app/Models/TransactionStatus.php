@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -12,7 +12,7 @@ class TransactionStatus extends Model
 
     public function transactions()
     {
-        return $this->belongsToMany('App\Transaction')
+        return $this->belongsToMany(Transaction::class)
                 ->withTimestamps();
     }
 }

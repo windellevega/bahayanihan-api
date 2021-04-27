@@ -2,7 +2,7 @@
 
 namespace App\Events;
 
-use App\Message;
+use App\Models\Message;
 
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -12,7 +12,7 @@ class Skill extends Model
 
     public function users()
     {
-        return $this->belongsToMany('App\User')
+        return $this->belongsToMany(User::class)
                 ->withTimestamps();
     }
 }

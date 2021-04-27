@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\User;
-use App\Conversation;
-use App\Message;
+use App\Models\User;
+use App\Models\Conversation;
+use App\Models\Message;
 use App\Events\NewMessageConversation;
 use App\Events\NewMessageUser;
 use Illuminate\Support\Facades\Auth;

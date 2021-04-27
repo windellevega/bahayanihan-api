@@ -11,12 +11,16 @@
 |
 */
 
+use App\Models\Conversation;
+use App\Models\Transaction;
+use Illuminate\Support\Facades\Broadcast;
+
 Broadcast::channel('App.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
 
 Broadcast::channel('conversation.{id}', function ($user, $id) {
-    return $id == \App\Conversation::where('id', $id)
+    return $id == Conversation::where('id', $id)
                             ->whereHas('Users', function($q) use ($user) {
                                 $q->where('user_id', $user->id);
                             })
@@ -29,7 +33,7 @@ Broadcast::channel('message-log.{id}', function ($user, $id) {
 });
 
 Broadcast::channel('transactions.{id}', function ($user, $id) {
-    return $user->id == \App\Transaction::where('worker_id', $id)
+    return $user->id == Transaction::where('worker_id', $id)
                             ->first()
                             ->worker_id;
 });

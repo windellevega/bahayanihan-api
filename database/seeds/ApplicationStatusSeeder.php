@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\ApplicationStatus;
+use App\Models\ApplicationStatus;
 
 class ApplicationStatusSeeder extends Seeder
 {

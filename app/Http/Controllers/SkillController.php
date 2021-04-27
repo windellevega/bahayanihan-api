@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Skill;
+use App\Models\Skill;
 
 use Illuminate\Http\Request;
 
@@ -34,7 +34,7 @@ class SkillController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  App\Skill  $skill
+     * @param  App\Models\Skill  $skill
      * @return \Illuminate\Http\Response
      */
     public function show(Skill $skill)

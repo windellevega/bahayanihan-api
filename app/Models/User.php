@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
@@ -39,28 +39,28 @@ class User extends Authenticatable
 
     public function skills()
     {
-        return $this->belongsToMany('App\Skill', 'user_skills', 'user_id', 'skill_id')
+        return $this->belongsToMany(Skill::class, 'user_skills', 'user_id', 'skill_id')
                 ->withPivot('years_experience')
                 ->withTimestamps();
     }
 
     public function transactions()
     {
-        return $this->hasMany('App\Transaction');
+        return $this->hasMany(Transaction::class);
     }
 
     public function credentials()
     {
-        return $this->hasMany('App\Credential');
+        return $this->hasMany(Credential::class);
     }
 
     public function workerApplications()
     {
-        return $this->hasMany('App\WorkerApplication');
+        return $this->hasMany(WorkerApplication::class);
     }
 
     public function conversations() {
-        return $this->belongsToMany('App\Conversation', 'user_conversations', 'user_id', 'conversation_id')
+        return $this->belongsToMany(Conversation::class, 'user_conversations', 'user_id', 'conversation_id')
                 ->withTimestamps();
     }
 }
