@@ -31,7 +31,7 @@ Route::group([
     Route::get('/user/role', [UserController::class, 'getUserRole']);
     Route::get('/user/{user}', [UserController::class, 'show']);
     Route::put('/user/{user}', [UserController::class, 'update']);
-    Route::get('/profile', [UserController::class, 'LoggedInUserInfo']);
+    Route::get('/profile', [UserController::class, 'loggedInUserInfo']);
     Route::put('/user-location', [UserController::class, 'updateLocation']);
 
     Route::get('/skills', [SkillController::class, 'index']);

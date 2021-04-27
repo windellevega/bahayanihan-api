@@ -31,10 +31,9 @@ class TransactionController extends Controller
         $transactions = Transaction::where('hailer_id', Auth::id())
                             ->orWhere('worker_id', Auth::id())
                             ->orderBy('created_at', 'desc')
+                            ->with('skill')
+                            ->with('transactionStatusHistory')
                             ->get();
-
-        $transactions->load('skill');
-        $transactions->load('transactionStatusHistory');
 
         return response()->json($transactions);
     }
@@ -137,7 +136,7 @@ class TransactionController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Transaction  $transaction
+     * @param  \App\Transaction  $transaction
      * @return \Illuminate\Http\Response
      */
     public function destroy(Transaction $transaction)

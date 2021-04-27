@@ -135,7 +135,7 @@ class UserController extends Controller
 
     public function loggedInUserInfo()
     {
-        $user = User::findOrFail(Auth::id());
+        $user = Auth::user();
         return response()->json($user);
     }
 
