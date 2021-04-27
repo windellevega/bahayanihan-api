@@ -18,6 +18,6 @@ class Message extends Model
 
     public function conversation()
     {
-        return $this->belongsTo(User::class, 'conversation_id');
+        return $this->belongsTo(Conversation::class, 'conversation_id');
     }
 }

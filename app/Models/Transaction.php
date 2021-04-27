@@ -24,7 +24,7 @@ class Transaction extends Model
 
     public function skill()
     {
-        return $this->belongsTo(User::class, 'skill_id');
+        return $this->belongsTo(Skill::class, 'skill_id');
     }
 
     public function transactionStatusHistory()
