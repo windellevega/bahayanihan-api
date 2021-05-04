@@ -38,11 +38,13 @@ class ConversationController extends Controller
     {
         $conversationsWithUnread = 0;
 
-        $user = User::find(Auth::id());
-        $user->loadCount('conversations');
+        $user = User::where('id', Auth::id())
+                    ->with(['conversations' => function($query) {
+                        $query->withCount('unreadMessages');
+                    }])
+                    ->first();
 
         foreach($user->conversations as $conversation) {
-            $conversation->loadCount('unreadMessages');
             if($conversation->unread_messages_count) {
                 $conversationsWithUnread++;
             }
